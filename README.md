@@ -38,3 +38,20 @@ class Query(BaseModel):
 Query(fields=["id", "name"]) # OK
 Query(fields=["email"]) # ValidationError: fields Input should be 'id', 'name' or 'age' [...]
 ```
+
+## Omit
+
+> Create a model with a subset of fields
+
+```python
+from metantic import Fields
+
+class User(BaseModel):
+    id: str
+    name: str
+    age: int
+
+# the ID is unchangeable
+def update(patch: Omit(User, ["id"])):
+    ...
+```
