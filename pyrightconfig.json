@@ -1,0 +1,8 @@
+{
+    "reportGeneralTypeIssues": false,
+    "reportUnusedVariable": false,
+    "reportUnusedFunction": false,
+    "include": ["*.py", "*.ipynb"],
+    "exclude": [],
+    "venvPath": ".venv"
+}

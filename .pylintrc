@@ -1,0 +1,12 @@
+[MESSAGES CONTROL]
+disable=
+    C0114,
+    C0301,
+    C0103,
+    maybe-no-member,
+    unexpected-keyword-arg,
+    C0321,
+    W0611,
+    redefined-builtin,
+    W1203,
+    no-value-for-parameter
