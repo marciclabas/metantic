@@ -55,3 +55,32 @@ class User(BaseModel):
 def update(patch: Omit(User, ["id"])):
     ...
 ```
+
+## Paths
+
+> Create type-safe paths
+
+```python
+from metantic import paths
+
+class FullName(TypedDict):
+    first: str; middle: str; family: str
+
+class User:
+    id: str
+    full_name: FullName
+    friends: list[str]
+    
+ps = paths(User) # PathBuilder object
+ps['id'].path # ['id']
+ps['full_name']['first'].path # ['full_name', 'first']
+ps['friends'][69].path # ['friends', 69]
+
+ps['full_name']['second'].path # ERROR
+
+
+
+```
+
+- Works with tuples, lists, dicts, classes and pydantic models
+- Type unions stop path generation
