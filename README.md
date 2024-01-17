@@ -58,20 +58,33 @@ def update(patch: Omit(User, ["id"])):
 
 ## Paths
 
-> Create type-safe paths
+> Type-safe paths
+
+### Validate
 
 ```python
 from metantic import paths
 
-class FullName(TypedDict):
+class FullName(BaseModel):
     first: str; middle: str; family: str
 
-class User:
+class User(BaseModel):
     id: str
     full_name: FullName
     friends: list[str]
     
-ps = paths(User) # PathBuilder object
+paths.validate(['full_name', 'first'], User.model_json_schema()) # True
+paths.validate(['bad_name', 'first'], User.model_json_schema()) # False
+```
+
+### Builder
+
+> Currently under construction. May fail for some generic/union types
+
+```python
+from metantic import paths
+    
+ps = paths.builder(User) # PathBuilder object
 ps['id'].path # ['id']
 ps['full_name']['first'].path # ['full_name', 'first']
 ps['friends'][69].path # ['friends', 69]
