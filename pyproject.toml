@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "metantic"
-version = "0.1.5"
+version = "0.1.6"
 authors = [
     {name="Marcel Claramunt", email="marcel@moveread.com"}
 ]
@@ -12,5 +12,10 @@ description = "Metaprogramming with pydantic Models (creating types from types) 
 dependencies = [
     "pydantic", "ramda"
 ]
+
 requires-python = ">=3.10"
 readme = {file="README.md", content-type="text/markdown"}
+
+[project.optional-dependencies]
+fastapi = ["fastapi"]
+

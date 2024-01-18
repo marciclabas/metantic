@@ -1,4 +1,6 @@
 source .venv/bin/activate
 echo "Make sure to update the version number beforehand!"
-echo "Running 'python -m build --wheel"
+rm -drf dist
 python -m build --wheel
+rm -drf build
+twine upload dist/*
