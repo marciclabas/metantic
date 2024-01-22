@@ -1,3 +1,4 @@
+from .util import model_type
 from .partial import Partial
 from .fields import Fields
 from .omit import Omit
