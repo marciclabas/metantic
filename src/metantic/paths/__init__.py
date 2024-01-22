@@ -1,4 +1,4 @@
 from ._validate import validate
 from ._builder import builder, PathBuilder
 from ._str import str
-from .path import Path
+from .path import Path, PathT
