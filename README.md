@@ -56,6 +56,32 @@ def update(patch: Omit(User, ["id"])):
     ...
 ```
 
+## Take
+
+> Create a model with a subset of fields (recursively)
+
+```python
+class FullName(BaseModel):
+    first: str; middle: str; family: str
+
+class User(BaseModel):
+    id: str
+    full_name: FullName
+    friends: list[str]
+    
+# field -> take the field
+# (field, subfields) -> take field but with subfields only
+UserInfo = Take(User, ['id', ('full_name': ['first', 'family'])])
+
+# UserInfo is equivalent to
+class UserInfo(BaseModel):
+    id: str
+    full_name: TakeFullName
+
+class TakeFullName(BaseModel):
+    first: str; family: str
+```
+
 ## Paths
 
 > Type-safe paths
