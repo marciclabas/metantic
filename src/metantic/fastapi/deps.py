@@ -31,7 +31,7 @@ def form_json(model: type[Model], name: str):
         file = form.get(name)
         if file is None:
             raise RequestValidationError([f"Missing Form '{name}'"])
-        data = await file.read()
+        data = file if isinstance(file, str) else await file.read()
         try:
             return model.model_validate_json(data)
         except ValidationError as e:

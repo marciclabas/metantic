@@ -73,8 +73,8 @@ class User(BaseModel):
     full_name: FullName
     friends: list[str]
     
-paths.validate(['full_name', 'first'], User.model_json_schema()) # True
-paths.validate(['bad_name', 'first'], User.model_json_schema()) # False
+paths.validate(['full_name', 'first'], User.model_json_schema()) # None
+paths.validate(['bad_name', 'first'], User.model_json_schema()) # ValueError("Key 'bad_name' doesn't exist in ['id', 'full_name', 'friends'])"
 ```
 
 ### Builder
