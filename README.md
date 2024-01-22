@@ -77,6 +77,21 @@ paths.validate(['full_name', 'first'], User.model_json_schema()) # None
 paths.validate(['bad_name', 'first'], User.model_json_schema()) # ValueError("Key 'bad_name' doesn't exist in ['id', 'full_name', 'friends'])"
 ```
 
+### Type
+
+> Create a path `RootModel` with validation
+>
+
+```python
+from metantic.paths import Path
+
+UserPath = Path(User)
+
+UserPath(root=['full_name', 'first']) # PathT(root=['full_name', 'first'])
+UserPath(root=['bad_name', 'first']) # raises ValueError(...)
+
+```
+
 ### Builder
 
 > Currently under construction. May fail for some generic/union types
