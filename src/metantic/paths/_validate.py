@@ -12,7 +12,7 @@ def validate(path: list[str|int], schema: dict[str]) -> ValueError | None:
     - `schema` can be obtained via `BaseModel.model_json_schema()` ([pydantic docs](https://docs.pydantic.dev/latest/concepts/json_schema/))
     - Assumes `schema` is valid; otherwise an exception may be raised
     """
-    def _validate(_schema: dict[str], _path: list[str]) -> bool:
+    def _validate(_schema: dict[str], _path: list[str]) -> ValueError | None:
         if _path == []:
             return None
         [k, *ks] = _path
@@ -26,8 +26,22 @@ def validate(path: list[str|int], schema: dict[str]) -> ValueError | None:
             else:
                 return ValueError(f"Key '{k}' doesn't exist in {list(properties.keys())}")
         elif _schema.get("type") == "array" and str(k).isdigit():
-            items = _schema.get("items", {})
-            return _validate(items, ks)
-        else:
-            return ValueError(f"Key '{k}' doesn't exist in schema: '{_schema}'")
+            if 'items' in _schema:
+                return _validate(_schema['items'], ks)
+            elif 'prefixItems' in _schema:
+                for option in _schema['prefixItems']:
+                    val = _validate(option, ks)
+                    if val is None:
+                        return None
+                return val
+            else:
+                raise NotImplementedError(f"Array type doesn't have 'items' nor 'prefixItems' keys. Schema: '{_schema}'")
+        elif 'anyOf' in _schema:
+            for option in _schema['anyOf']:
+                val = _validate(option, _path)
+                if val is None:
+                    return None
+            return val
+        
+        return ValueError(f"Key '{k}' doesn't exist in schema: '{_schema}'")
     return _validate(schema, path)
