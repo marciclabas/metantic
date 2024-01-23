@@ -1,8 +1,10 @@
-from typing import GenericAlias, TypeVar, Any, get_args, get_origin
+from typing import GenericAlias, TypeVar, Any, get_args, get_origin, Union, _UnionGenericAlias
+from types import UnionType
 from pydantic import BaseModel, create_model, ConfigDict
 import ramda as R
 
 Model = TypeVar('Model', bound=BaseModel)
+@R.curry
 def Take(cls: type[Any], fields: list[str | tuple[str, list]]) -> type[Model]:
     """`model` with `fields` only
     - if `fields[i]` is a `str`, takes only that field
@@ -26,7 +28,11 @@ def Take(cls: type[Any], fields: list[str | tuple[str, list]]) -> type[Model]:
     })
     ```
     """
-    if isinstance(cls, GenericAlias):
+    if isinstance(cls, UnionType) or isinstance(cls, _UnionGenericAlias):
+        args = get_args(cls)
+        mapped_args = tuple(R.map(Take(fields=fields), args))
+        return Union[mapped_args]
+    elif isinstance(cls, GenericAlias):
         base = get_origin(cls)
         args = get_args(cls)
         mapped_args = tuple(R.map(Take(fields=fields), args))
