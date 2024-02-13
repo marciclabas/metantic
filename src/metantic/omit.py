@@ -1,4 +1,4 @@
-from typing import Literal, TypeVar
+from typing import TypeVar
 from pydantic import BaseModel, create_model, ConfigDict
 
 Model = TypeVar('Model', bound=BaseModel)
